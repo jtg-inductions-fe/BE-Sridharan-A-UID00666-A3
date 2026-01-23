@@ -29,39 +29,18 @@ class Booking(TimeStampModel):
 
 class Seat(TimeStampModel):
     """
-    Seat model representing a physical seat in a cinema.
+    BookingSeat model linking seats to a booking and slot.
 
     Attributes:
         row (str): Seat row identifier (e.g., A, B, C).
         number (int): Seat number within the row.
+        booking (ForeignKey): Booking reference.
     """
 
-    row = models.CharField(max_length=1)
+    row = models.PositiveIntegerField()
     number = models.PositiveIntegerField()
 
-    def __str__(self):
-        return f"{self.row}{self.number}"
-
-
-class BookingSeat(TimeStampModel):
-    """
-    BookingSeat model linking seats to a booking and slot.
-
-    Attributes:
-        booking (ForeignKey): Booking reference.
-        seat (ForeignKey): Seat being booked.
-        slot (ForeignKey): Slot for which the seat is booked.
-    """
-
-    booking = models.ForeignKey(
-        Booking, on_delete=models.CASCADE, related_name="booking_seats"
-    )
-    seat = models.ForeignKey(
-        Seat, on_delete=models.CASCADE, related_name="booking_seats"
-    )
-    slot = models.ForeignKey(
-        Slot, on_delete=models.CASCADE, related_name="booking_seats"
-    )
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name="seats")
 
     def __str__(self):
-        return f"{self.seat} - {self.slot}"
+        return f"{self.row} - {self.number}"

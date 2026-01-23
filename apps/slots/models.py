@@ -18,12 +18,19 @@ class Slot(TimeStampModel):
         cinema (ForeignKey): Cinema where the movie is shown.
     """
 
-    date = models.DateField()
-    start_time = models.TimeField()
+    date_time = models.DateTimeField()
     end_time = models.TimeField()
     price = models.PositiveIntegerField()
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="slots")
     cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, related_name="slots")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["date_time", "movie", "cinema"],
+                name="unique_slot_per_movie_cinema_date_time",
+            )
+        ]
 
     def __str__(self):
         return f"{self.movie.name} - {self.date} ({self.start_time})"

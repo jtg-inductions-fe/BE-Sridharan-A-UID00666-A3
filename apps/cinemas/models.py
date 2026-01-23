@@ -21,5 +21,13 @@ class Cinema(TimeStampModel):
     seats_per_rows = models.PositiveIntegerField()
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name="cinemas")
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "location", "city"],
+                name="unique_cinema_per_location_city",
+            )
+        ]
+
     def __str__(self):
         return self.name
