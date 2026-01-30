@@ -1,13 +1,15 @@
 from django.urls import path
 
 from .views import (
-    MovieCinemaListView,
     MovieDetailsView,
     MovieListView,
+    MovieSlotsPerCinemaListView,
 )
 
 urlpatterns = [
     path("", MovieListView.as_view(), name="movie-list"),
     path("<slug:slug>/", MovieDetailsView.as_view(), name="movie-detail"),
-    path("<slug:slug>/cinemas/", MovieCinemaListView.as_view(), name="movie-cinemas"),
+    path(
+        "<slug:slug>/slots", MovieSlotsPerCinemaListView.as_view(), name="movie-cinemas"
+    ),
 ]
